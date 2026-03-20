@@ -6,7 +6,7 @@
     <div class="container">
         <!-- titre -->
         <div class="text-left">
-            <img src="{{ app.request.getBasePath()~'/banniere.jpg' }}" >
+            <img src="{{ app.request.getBasePath()~'/banniere.jpg' }}" alt="bannière MediaTek86">
         </div>
         <!-- menu -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -16,17 +16,11 @@
                         <a class="nav-link" href="{{ path('accueil') }}">Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('formations') }}">Formations</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('playlists') }}">Playlists</a>
-                    </li>        
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('admin.accueil') }}">Administration</a>
+                        <a class="nav-link" href="{{ path('admin.formations') }}">Formations</a>
                     </li>
                 </ul>
             </div>
-        </nav>        
+        </nav>
     </div>
 {% endblock %}
 {% block body %}{% endblock %}
@@ -37,7 +31,6 @@
             <p><small><i>
                 Consultez nos <a class="link-secondary" href="{{ path('cgu') }}">Conditions Générales d'Utilisation</a>
             </i></small></p>
-            
         </footer>
     </div>
 {% endblock %}
