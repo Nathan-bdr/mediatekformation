@@ -64,7 +64,18 @@ class PlaylistsController extends AbstractController {
 
     #[Route('/playlists/tri/{champ}/{ordre}', name: 'playlists.sort')]
     public function sort($champ, $ordre): Response{
-        $playlists = $this->playlistRepository->findAllOrderByName($ordre);
+        // On choisit le tri selon le champ demandé
+    switch($champ) {
+        case "name":
+            $playlists = $this->playlistRepository->findAllOrderByName($ordre);
+            break;
+        case "nbFormations":
+            $playlists = $this->playlistRepository->findAllOrderByNbFormations($ordre);
+            break;
+        default:
+            $playlists = $this->playlistRepository->findAllOrderByName('ASC');
+            break;
+    }
         
         $categories = $this->categorieRepository->findAll();
         return $this->render(self::PAGE_PLAYLISTS, [
