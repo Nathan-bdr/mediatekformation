@@ -1,0 +1,34 @@
+{% extends "baseadmin.html.twig" %}
+
+{% block body %}
+    <!-- Formulaire d'ajout -->
+    <br /><form method="POST" class="mb-4 d-flex gap-2 align-items-center">
+        <label for="name" class="form-label mb-0">Nouvelle catégorie :</label>
+        <input type="text" class="form-control w-auto" id="name" name="name" required>
+        <button type="submit" class="btn btn-info">Ajouter</button>
+    </form>
+
+    <!-- Liste des catégories -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="text-left align-top" scope="col">Nom</th>
+                <th class="text-end align-top" scope="col">&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if categories|length > 0 %}
+                {% for k in 0..categories|length-1 %}
+                    <tr class="align-middle">
+                        <td>{{ categories[k].name }}</td>
+                        <td class="text-end">
+                            <a href="{{ path('admin.categories.supprimer', {id:categories[k].id}) }}"
+                               class="btn btn-info btn-sm"
+                               onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?')">Supprimer</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+{% endblock %}
