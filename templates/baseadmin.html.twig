@@ -11,7 +11,7 @@
         <!-- menu -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('accueil') }}">Accueil</a>
                     </li>
@@ -25,6 +25,14 @@
                         <a class="nav-link" href="{{ path('admin.categories') }}">Catégories</a>
                     </li>
                 </ul>
+                <ul class="navbar-nav ms-auto">
+                    {% if app.user %}
+                        <li class="nav-item">
+                            <a class="nav-link text-danger" href="{{ path('logout') }}">Déconnexion</a>
+                        </li>
+                    {% endif %}
+                </ul>
+                
             </div>
         </nav>
     </div>
