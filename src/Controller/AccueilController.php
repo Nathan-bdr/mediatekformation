@@ -8,8 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Description of AccueilController
- *
- * @author emds
+ * @author Nathan Boudier
  */
 class AccueilController extends AbstractController{
     
@@ -19,13 +18,16 @@ class AccueilController extends AbstractController{
     private $repository;
     
     /**
-     * 
      * @param FormationRepository $repository
      */
     public function __construct(FormationRepository $repository) {
         $this->repository = $repository;
     }   
     
+    /**
+     * Affiche la page d'accueil
+     * @return Response
+     */
     #[Route('/', name: 'accueil')]
     public function index(): Response{
         $formations = $this->repository->findAllLasted(2);
@@ -34,6 +36,10 @@ class AccueilController extends AbstractController{
         ]); 
     }
     
+    /**
+     * Affiche la page des conditions générales d'utilisation
+     * @return Response
+     */
     #[Route('/cgu', name: 'cgu')]
     public function cgu(): Response{
         return $this->render("pages/cgu.html.twig"); 

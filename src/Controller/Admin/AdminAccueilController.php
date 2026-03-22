@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Controleur admin de l'accueil
+ * @author Nathan Boudier
  */
 class AdminAccueilController extends AbstractController {
 
@@ -15,6 +16,10 @@ class AdminAccueilController extends AbstractController {
      */
     private const PAGE_ADMIN_ACCUEIL = "admin/accueil.html.twig";
 
+    /**
+     * Affiche la page d'accueil de l'administration
+     * @return Response
+     */
     #[Route('/admin', name: 'admin.accueil')]
     public function index(): Response {
         return $this->render(self::PAGE_ADMIN_ACCUEIL);

@@ -7,21 +7,34 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Repository de l'entité Playlist
  * @extends ServiceEntityRepository<Playlist>
+ * @author Nathan Boudier
  */
 class PlaylistRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Playlist::class);
     }
 
+    /**
+     * Ajoute une playlist en base de données
+     * @param Playlist $entity
+     */
     public function add(Playlist $entity): void
     {
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
     }
 
+    /**
+     * Supprime une playlist de la base de données
+     * @param Playlist $entity
+     */
     public function remove(Playlist $entity): void
     {
         $this->getEntityManager()->remove($entity);
@@ -44,8 +57,7 @@ class PlaylistRepository extends ServiceEntityRepository
     } 
 	
     /**
-     * Enregistrements dont un champ contient une valeur
-     * ou tous les enregistrements si la valeur est vide
+     * Enregistrements dont un champ contient une valeur ou tous les enregistrements si la valeur est vide
      * @param type $champ
      * @param type $valeur
      * @param type $table si $champ dans une autre table

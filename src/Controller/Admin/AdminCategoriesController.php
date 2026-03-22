@@ -10,16 +10,32 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Controleur admin des catégories
+ * @author Nathan Boudier
  */
 class AdminCategoriesController extends AbstractController {
 
+    /**
+     * @var CategorieRepository
+     */
     private $categorieRepository;
+    
+    /**
+     * Chemin vers la page admin 'catégories'
+     */
     private const PAGE_ADMIN_CATEGORIES = "admin/categories.html.twig";
 
+    /**
+     * @param CategorieRepository $categorieRepository
+     */
     public function __construct(CategorieRepository $categorieRepository) {
         $this->categorieRepository = $categorieRepository;
     }
 
+    /**
+     * Affiche la liste des catégories et gère l'ajout d'une nouvelle catégorie
+     * @param Request $request
+     * @return Response
+     */
     #[Route('/admin/categories', name: 'admin.categories')]
     public function index(Request $request): Response {
         // Si le formulaire d'ajout est bien soumis
@@ -41,6 +57,11 @@ class AdminCategoriesController extends AbstractController {
         ]);
     }
 
+    /**
+     * Supprime une catégorie si aucune formation n'y est rattachée
+     * @param int $id
+     * @return Response
+     */
     #[Route('/admin/categories/supprimer/{id}', name: 'admin.categories.supprimer')]
     public function supprimer(int $id): Response {
         $categorie = $this->categorieRepository->find($id);

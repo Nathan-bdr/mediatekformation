@@ -12,15 +12,40 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Controleur admin des formations
+ * @author Nathan Boudier
  */
 class AdminFormationsController extends AbstractController {
 
+    /**
+     * @var FormationRepository
+     */
     private $formationRepository;
+    
+    /**
+     * @var PlaylistRepository
+     */
     private $playlistRepository;
+    
+    /**
+     * @var CategorieRepository
+     */
     private $categorieRepository;
+    
+    /**
+     * Chemin vers la page admin 'formations'
+     */
     private const PAGE_ADMIN_FORMATIONS = "admin/formations.html.twig";
+    
+    /**
+     * Chemin vers le formulaire admin 'formation'
+     */
     private const PAGE_ADMIN_FORMATION_FORM = "admin/formation_form.html.twig";
 
+    /**
+     * @param FormationRepository $formationRepository
+     * @param PlaylistRepository $playlistRepository
+     * @param CategorieRepository $categorieRepository
+     */
     public function __construct(
         FormationRepository $formationRepository,
         PlaylistRepository $playlistRepository,
@@ -31,6 +56,10 @@ class AdminFormationsController extends AbstractController {
         $this->categorieRepository = $categorieRepository;
     }
 
+    /**
+     * Affiche la liste de toutes les formations
+     * @return Response
+     */
     #[Route('/admin/formations', name: 'admin.formations')]
     public function index(): Response {
         $formations = $this->formationRepository->findAll();
@@ -41,6 +70,13 @@ class AdminFormationsController extends AbstractController {
         ]);
     }
 
+    /**
+     * Affiche la liste des formations triées sur un champ
+     * @param type $champ
+     * @param type $ordre
+     * @param type $table
+     * @return Response
+     */
     #[Route('/admin/formations/tri/{champ}/{ordre}/{table}', name: 'admin.formations.sort')]
     public function sort($champ, $ordre, $table = ""): Response {
         $formations = $this->formationRepository->findAllOrderBy($champ, $ordre, $table);
@@ -51,6 +87,13 @@ class AdminFormationsController extends AbstractController {
         ]);
     }
 
+    /**
+     * Affiche la liste des formations dont un champ contient une valeur
+     * @param type $champ
+     * @param Request $request
+     * @param type $table
+     * @return Response
+     */
     #[Route('/admin/formations/recherche/{champ}/{table}', name: 'admin.formations.findallcontain')]
     public function findAllContain($champ, Request $request, $table = ""): Response {
         $valeur = $request->get("recherche");
@@ -64,6 +107,11 @@ class AdminFormationsController extends AbstractController {
         ]);
     }
 
+    /**
+     * Affiche le formulaire d'ajout et gère l'ajout d'une formation
+     * @param Request $request
+     * @return Response
+     */
     #[Route('/admin/formations/ajouter', name: 'admin.formations.ajouter')]
     public function ajouter(Request $request): Response {
         // Si le formulaire est bien soumis
@@ -101,6 +149,12 @@ class AdminFormationsController extends AbstractController {
         ]);
     }
 
+    /**
+     * Affiche le formulaire de modification et gère la modification d'une formation
+     * @param int $id
+     * @param Request $request
+     * @return Response
+     */
     #[Route('/admin/formations/modifier/{id}', name: 'admin.formations.modifier')]
     public function modifier(int $id, Request $request): Response {
         $formation = $this->formationRepository->find($id);
@@ -140,6 +194,11 @@ class AdminFormationsController extends AbstractController {
         ]);
     }
     
+    /**
+     * Supprime une formation
+     * @param int $id
+     * @return Response
+     */
     #[Route('/admin/formations/supprimer/{id}', name: 'admin.formations.supprimer')]
     public function supprimer(int $id): Response {
         $formation = $this->formationRepository->find($id);

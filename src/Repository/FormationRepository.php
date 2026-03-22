@@ -7,21 +7,34 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Repository de l'entité Formation
  * @extends ServiceEntityRepository<Formation>
+ * @author Nathan Boudier
  */
 class FormationRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Formation::class);
     }
 
+    /**
+     * Ajoute une formation en base de données
+     * @param Formation $entity
+     */
     public function add(Formation $entity): void
     {
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
     }
 
+    /**
+     * Supprime une formation de la base de données
+     * @param Formation $entity
+     */
     public function remove(Formation $entity): void
     {
         $this->getEntityManager()->remove($entity);
@@ -51,8 +64,7 @@ class FormationRepository extends ServiceEntityRepository
     }
 
     /**
-     * Enregistrements dont un champ contient une valeur
-     * ou tous les enregistrements si la valeur est vide
+     * Enregistrements dont un champ contient une valeur ou tous les enregistrements si la valeur est vide
      * @param type $champ
      * @param type $valeur
      * @param type $table si $champ dans une autre table

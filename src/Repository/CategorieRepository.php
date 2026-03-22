@@ -7,21 +7,34 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Repository de l'entité Categorie
  * @extends ServiceEntityRepository<Categorie>
+ * @author Nathan Boudier
  */
 class CategorieRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Categorie::class);
     }
 
+    /**
+     * Ajoute une catégorie en base de données
+     * @param Categorie $entity
+     */
     public function add(Categorie $entity): void
     {
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
     }
 
+    /**
+     * Supprime une catégorie de la base de données
+     * @param Categorie $entity
+     */
     public function remove(Categorie $entity): void
     {
         $this->getEntityManager()->remove($entity);
