@@ -61,12 +61,14 @@ class AdminFormationsController extends AbstractController {
      * @return Response
      */
     #[Route('/admin/formations', name: 'admin.formations')]
-    public function index(): Response {
+    public function index(Request $request): Response {
+        $message = $request->get('message', '');
         $formations = $this->formationRepository->findAll();
         $categories = $this->categorieRepository->findAll();
         return $this->render(self::PAGE_ADMIN_FORMATIONS, [
             'formations' => $formations,
-            'categories' => $categories
+            'categories' => $categories,
+            'message' => $message
         ]);
     }
 
@@ -137,7 +139,7 @@ class AdminFormationsController extends AbstractController {
             }
 
             $this->formationRepository->add($formation);
-            return $this->redirectToRoute('admin.formations');
+            return $this->redirectToRoute('admin.formations', ['message' => 'Formation ajoutée avec succès.']);
         }
 
         // Sinon on affiche le formulaire vide
@@ -182,7 +184,7 @@ class AdminFormationsController extends AbstractController {
             }
 
             $this->formationRepository->add($formation);
-            return $this->redirectToRoute('admin.formations');
+            return $this->redirectToRoute('admin.formations', ['message' => 'Formation modifiée avec succès.']);
         }
 
         // Sinon on affiche le formulaire prérempli
@@ -203,6 +205,6 @@ class AdminFormationsController extends AbstractController {
     public function supprimer(int $id): Response {
         $formation = $this->formationRepository->find($id);
         $this->formationRepository->remove($formation);
-        return $this->redirectToRoute('admin.formations');
+        return $this->redirectToRoute('admin.formations', ['message' => 'Formation supprimée avec succès.']);
     }
 }

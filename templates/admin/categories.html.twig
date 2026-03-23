@@ -1,6 +1,9 @@
 {% extends "baseadmin.html.twig" %}
 
 {% block body %}
+    {% if message|default %}
+        <div class="alert alert-info mt-2">{{ message }}</div>
+    {% endif %}
     <!-- Formulaire d'ajout -->
     <br /><form method="POST" class="mb-4 d-flex gap-2 align-items-center">
         <label for="name" class="form-label mb-0">Nouvelle catégorie :</label>

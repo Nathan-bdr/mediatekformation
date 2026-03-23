@@ -38,22 +38,22 @@ class AdminCategoriesController extends AbstractController {
      */
     #[Route('/admin/categories', name: 'admin.categories')]
     public function index(Request $request): Response {
-        // Si le formulaire d'ajout est bien soumis
+        $message = $request->get('message', '');
         if($request->get("name")){
             $name = $request->get('name');
-            // On vérifie que la catégorie n'existe pas déjà
             $existante = $this->categorieRepository->findOneBy(['name' => $name]);
             if(!$existante){
                 $categorie = new Categorie();
                 $categorie->setName($name);
                 $this->categorieRepository->add($categorie);
+                return $this->redirectToRoute('admin.categories', ['message' => 'Catégorie ajoutée avec succès.']);
             }
-            return $this->redirectToRoute('admin.categories');
+            return $this->redirectToRoute('admin.categories', ['message' => 'Cette catégorie existe déjà.']);
         }
-
         $categories = $this->categorieRepository->findBy([], ['name' => 'ASC']);
         return $this->render(self::PAGE_ADMIN_CATEGORIES, [
-            'categories' => $categories
+            'categories' => $categories,
+            'message' => $message
         ]);
     }
 
@@ -65,11 +65,10 @@ class AdminCategoriesController extends AbstractController {
     #[Route('/admin/categories/supprimer/{id}', name: 'admin.categories.supprimer')]
     public function supprimer(int $id): Response {
         $categorie = $this->categorieRepository->find($id);
-        // On vérifie qu'aucune formation n'est rattachée
         if($categorie->getFormations()->count() > 0){
-            return $this->redirectToRoute('admin.categories');
+            return $this->redirectToRoute('admin.categories', ['message' => 'Impossible de supprimer : cette catégorie est rattachée à des formations.']);
         }
         $this->categorieRepository->remove($categorie);
-        return $this->redirectToRoute('admin.categories');
+        return $this->redirectToRoute('admin.categories', ['message' => 'Catégorie supprimée avec succès.']);
     }
 }

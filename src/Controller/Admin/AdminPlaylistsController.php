@@ -61,12 +61,14 @@ class AdminPlaylistsController extends AbstractController {
      * @return Response
      */
     #[Route('/admin/playlists', name: 'admin.playlists')]
-    public function index(): Response {
+    public function index(Request $request): Response {
+        $message = $request->get('message', '');
         $playlists = $this->playlistRepository->findAllOrderByName('ASC');
         $categories = $this->categorieRepository->findAll();
         return $this->render(self::PAGE_ADMIN_PLAYLISTS, [
             'playlists' => $playlists,
-            'categories' => $categories
+            'categories' => $categories,
+            'message' => $message
         ]);
     }
 
@@ -123,16 +125,13 @@ class AdminPlaylistsController extends AbstractController {
      */
     #[Route('/admin/playlists/ajouter', name: 'admin.playlists.ajouter')]
     public function ajouter(Request $request): Response {
-        // Si le formulaire est bien soumis
         if($request->get("name")){
             $playlist = new Playlist();
             $playlist->setName($request->get('name'));
             $playlist->setDescription($request->get('description'));
             $this->playlistRepository->add($playlist);
-            return $this->redirectToRoute('admin.playlists');
+            return $this->redirectToRoute('admin.playlists', ['message' => 'Playlist ajoutée avec succès.']);
         }
-
-        // Sinon on affiche le formulaire vide
         return $this->render(self::PAGE_ADMIN_PLAYLIST_FORM, [
             'playlist' => new Playlist(),
             'formations' => [],
@@ -155,7 +154,7 @@ class AdminPlaylistsController extends AbstractController {
             $playlist->setName($request->get('name'));
             $playlist->setDescription($request->get('description'));
             $this->playlistRepository->add($playlist);
-            return $this->redirectToRoute('admin.playlists');
+            return $this->redirectToRoute('admin.playlists', ['message' => 'Playlist modifiée avec succès.']);
         }
 
         // Sinon on affiche le formulaire prérempli avec la liste des formations
@@ -177,9 +176,9 @@ class AdminPlaylistsController extends AbstractController {
         $playlist = $this->playlistRepository->find($id);
         // On vérifie qu'il n'y a pas de formations rattachées
         if($playlist->getFormations()->count() > 0){
-            return $this->redirectToRoute('admin.playlists');
+            return $this->redirectToRoute('admin.playlists', ['message' => 'Impossible de supprimer : des formations sont rattachées à cette playlist.']);
         }
         $this->playlistRepository->remove($playlist);
-        return $this->redirectToRoute('admin.playlists');
+        return $this->redirectToRoute('admin.playlists', ['message' => 'Playlist supprimée avec succès.']);
     }
 }
